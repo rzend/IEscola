@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-API", "1-API", "{939A4189-218E-4787-BB93-BC045019D919}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Application", "2-Application", "{8738F9D9-4A5A-4A85-8559-F4583F1F1315}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Domain", "3-Domain", "{87484D8C-5BE5-434D-BAAC-9043E5B074E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Infra", "4-Infra", "{01E34901-3B7B-4C45-9766-90B01B280F26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-CrossCutting", "5-CrossCutting", "{5D2E3467-8807-4638-B79B-7B17455F1FBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEscola.Api", "app\IEscola.Api\IEscola.Api.csproj", "{4A1BFF94-C717-46C8-9C33-DE87D9735E25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A1BFF94-C717-46C8-9C33-DE87D9735E25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A1BFF94-C717-46C8-9C33-DE87D9735E25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A1BFF94-C717-46C8-9C33-DE87D9735E25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A1BFF94-C717-46C8-9C33-DE87D9735E25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4A1BFF94-C717-46C8-9C33-DE87D9735E25} = {939A4189-218E-4787-BB93-BC045019D919}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8EA60679-CC07-45D8-96AA-0AB3AB0538E0}
+	EndGlobalSection
+EndGlobal
