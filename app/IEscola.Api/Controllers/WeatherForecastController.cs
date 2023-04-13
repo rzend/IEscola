@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using IEscola.Domain.Entities;
 
 namespace IEscola.Api.Controllers
 {
@@ -23,17 +23,25 @@ namespace IEscola.Api.Controllers
             _logger = logger;
         }
 
+        //[HttpGet]
+        //public IEnumerable<Professor> Get()
+        //{
+        //    var rng = new Random();
+        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        //    {
+        //        Date = DateTime.Now.AddDays(index),
+        //        TemperatureC = rng.Next(-20, 55),
+        //        Summary = Summaries[rng.Next(Summaries.Length)]
+        //    })
+        //    .ToArray();
+        //}
+
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public Professor Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var professor = new Professor(1, "João da Silva", "01234567890", new DateTime(1990, 2, 27));
+
+            return professor;
         }
     }
 }
