@@ -15,13 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-CrossCutting", "5-CrossCu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IEscola.Api", "app\IEscola.Api\IEscola.Api.csproj", "{4A1BFF94-C717-46C8-9C33-DE87D9735E25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEscola.Application", "app\IEscola.Application\IEscola.Application.csproj", "{6F1F30AB-FE84-42ED-AEC4-8ECCC5D7E850}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IEscola.Application", "app\IEscola.Application\IEscola.Application.csproj", "{6F1F30AB-FE84-42ED-AEC4-8ECCC5D7E850}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEscola.Domain", "app\IEscola.Domain\IEscola.Domain.csproj", "{3E958F11-84F0-4477-8C72-1C97D29E9110}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IEscola.Domain", "app\IEscola.Domain\IEscola.Domain.csproj", "{3E958F11-84F0-4477-8C72-1C97D29E9110}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEscola.Infra", "app\IEscola.Infra\IEscola.Infra.csproj", "{CF9DA815-B0B9-44EB-809D-F8D349EF7C5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IEscola.Infra", "app\IEscola.Infra\IEscola.Infra.csproj", "{CF9DA815-B0B9-44EB-809D-F8D349EF7C5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEscola.CrossCutting", "app\IEscola.CrossCutting\IEscola.CrossCutting.csproj", "{B44F22EE-F1AD-4B5E-B7F6-05E7C9D102EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IEscola.CrossCutting", "app\IEscola.CrossCutting\IEscola.CrossCutting.csproj", "{B44F22EE-F1AD-4B5E-B7F6-05E7C9D102EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6-Tests", "6-Tests", "{DE92C33B-BC58-422F-8CE4-FE497FE76B32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
