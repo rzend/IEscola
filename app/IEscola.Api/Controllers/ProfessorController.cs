@@ -30,31 +30,39 @@ namespace IEscola.Api.Controllers
 
         // GET api/<ProfessorController>/5
         [HttpGet("{id}")]
-        public ActionResult<Professor> Get(int id)
+        public IActionResult Get(int id)
         {
             if (id <= 0)
                 return BadRequest("id deve ser maior que zero");
 
             var professor = professorList.FirstOrDefault(p => p.Id == id);
+            if (professor != null)
+                professor.Tratamento = Constantes.TratamentoProfessor;
+
             return Ok(professor);
         }
 
         // POST api/<ProfessorController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Professor professor)
         {
+
+
+            return Ok();
         }
 
         // PUT api/<ProfessorController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] Professor professor)
         {
+            return Ok();
         }
 
         // DELETE api/<ProfessorController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            return Ok();
         }
     }
 }

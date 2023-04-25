@@ -2,7 +2,7 @@
 
 namespace IEscola.Domain.Entities
 {
-    public class EntityBase
+    public abstract class EntityBase
     {
         public int Id { get; set; }
         
@@ -14,7 +14,7 @@ namespace IEscola.Domain.Entities
         public string UsuarioCadastro { get; set; }
         public string UsuarioUltimaAlteracao { get; set; }
 
-        public EntityBase()
+        protected EntityBase()
         {
             DataCadastro = DateTime.Now;
             DataUltimaAlteracao = DateTime.Now;
