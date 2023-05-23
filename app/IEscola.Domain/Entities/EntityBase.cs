@@ -4,7 +4,7 @@ namespace IEscola.Domain.Entities
 {
     public abstract class EntityBase
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         
 
         public DateTime DataCadastro { get; private set; }

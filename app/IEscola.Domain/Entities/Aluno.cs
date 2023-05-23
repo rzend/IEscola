@@ -4,7 +4,7 @@ namespace IEscola.Domain.Entities
 {
     public class Aluno : EntityBase
     {
-        public Aluno(int id, string nome, DateTime dataNascimento, int numeroMatricula)
+        public Aluno(Guid id, string nome, DateTime dataNascimento, int numeroMatricula)
         {
             Id = id;
             Nome = nome;
