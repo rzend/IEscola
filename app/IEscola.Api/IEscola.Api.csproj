@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IEscola.Application\IEscola.Application.csproj" />
     <ProjectReference Include="..\IEscola.Domain\IEscola.Domain.csproj" />
-    <ProjectReference Include="..\IEscola.Infra\IEscola.Infra.csproj" />
   </ItemGroup>
 
 

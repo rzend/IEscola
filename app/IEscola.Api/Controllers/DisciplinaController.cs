@@ -1,5 +1,5 @@
-﻿using IEscola.Domain.Entities;
-using IEscola.Infra.Repositories;
+﻿using IEscola.Application.Services;
+using IEscola.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,8 +20,8 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Disciplina>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            var repository = new DisciplinaRepository();
-            var list = repository.Get();
+            var service = new DisciplinaService();
+            var list = service.Get();
 
             return Ok(list);
         }
@@ -35,8 +35,8 @@ namespace IEscola.Api.Controllers
             if (Guid.Empty == id)
                 return BadRequest("id inválido");
 
-            var repository = new DisciplinaRepository();
-            var disciplina = repository.Get(id);
+            var service = new DisciplinaService();
+            var disciplina = service.Get(id);
 
             return Ok(disciplina);
         }
@@ -48,8 +48,8 @@ namespace IEscola.Api.Controllers
         public IActionResult Post([FromBody] Disciplina disciplina, [FromHeader, Required] DadosLigacao dadosLigacao)
         {
 
-            var repository = new DisciplinaRepository();
-            repository.Insert(disciplina);
+            var service = new DisciplinaService();
+            service.Insert(disciplina);
 
             return Ok(disciplina);
         }
@@ -60,8 +60,8 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Put(Guid id, [FromBody] Disciplina disciplina)
         {
-            var repository = new DisciplinaRepository();
-            repository.Update(id, disciplina);
+            var service = new DisciplinaService();
+            service.Update(id, disciplina);
 
             return Ok(disciplina);
         }
@@ -72,10 +72,10 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Delete(Guid id)
         {
-            var repository = new DisciplinaRepository();
-            var disciplina = repository.Get(id);
+            var service = new DisciplinaService();
+            var disciplina = service.Get(id);
 
-            repository.Delete(disciplina);
+            service.Delete(disciplina);
 
             return Ok();
         }
