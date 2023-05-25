@@ -1,11 +1,12 @@
 ﻿using IEscola.Domain.Entities;
+using IEscola.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace IEscola.Infra.Repositories
 {
-    public class DisciplinaRepository
+    public class DisciplinaRepository : IDisciplinaRepository
     {
         private readonly List<Disciplina> _disciplinaList = new List<Disciplina> {
             new Disciplina ( Guid.Parse("292499B0-2B09-4787-92CF-8C352456EAE0"), "Matemática", "A melhor de todas"),

@@ -1,4 +1,5 @@
-﻿using IEscola.Application.Services;
+﻿using IEscola.Application.Interfaces;
+using IEscola.Application.Services;
 using IEscola.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +15,19 @@ namespace IEscola.Api.Controllers
     public class DisciplinaController : MainController
     {
 
+        private readonly IDisciplinaService _service;
+
+        public DisciplinaController(IDisciplinaService service)
+        {
+            _service = service;
+        }
 
         // GET: api/<DisciplinaController>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Disciplina>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            var service = new DisciplinaService();
-            var list = service.Get();
+            var list = _service.Get();
 
             return Ok(list);
         }
@@ -35,8 +41,7 @@ namespace IEscola.Api.Controllers
             if (Guid.Empty == id)
                 return BadRequest("id inválido");
 
-            var service = new DisciplinaService();
-            var disciplina = service.Get(id);
+            var disciplina = _service.Get(id);
 
             return Ok(disciplina);
         }
@@ -48,8 +53,7 @@ namespace IEscola.Api.Controllers
         public IActionResult Post([FromBody] Disciplina disciplina, [FromHeader, Required] DadosLigacao dadosLigacao)
         {
 
-            var service = new DisciplinaService();
-            service.Insert(disciplina);
+            _service.Insert(disciplina);
 
             return Ok(disciplina);
         }
@@ -60,8 +64,7 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Put(Guid id, [FromBody] Disciplina disciplina)
         {
-            var service = new DisciplinaService();
-            service.Update(id, disciplina);
+            _service.Update(id, disciplina);
 
             return Ok(disciplina);
         }
@@ -72,10 +75,9 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Delete(Guid id)
         {
-            var service = new DisciplinaService();
-            var disciplina = service.Get(id);
+            var disciplina = _service.Get(id);
 
-            service.Delete(disciplina);
+            _service.Delete(disciplina);
 
             return Ok();
         }

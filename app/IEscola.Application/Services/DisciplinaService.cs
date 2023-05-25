@@ -1,21 +1,21 @@
-﻿using IEscola.Domain.Entities;
-using IEscola.Infra.Repositories;
+﻿using IEscola.Application.Interfaces;
+using IEscola.Domain.Entities;
+using IEscola.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 
 namespace IEscola.Application.Services
 {
-    public class DisciplinaService
+    public class DisciplinaService : IDisciplinaService
     {
-        DisciplinaRepository _repository;
-        public DisciplinaService()
+        IDisciplinaRepository _repository;
+        public DisciplinaService(IDisciplinaRepository repository)
         {
-            _repository = new DisciplinaRepository();
+            _repository = repository;
         }
 
         public IEnumerable<Disciplina> Get()
         {
-            
             var list = _repository.Get();
             return list;
         }
