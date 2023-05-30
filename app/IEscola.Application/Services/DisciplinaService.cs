@@ -9,6 +9,7 @@ namespace IEscola.Application.Services
     public class DisciplinaService : IDisciplinaService
     {
         IDisciplinaRepository _repository;
+
         public DisciplinaService(IDisciplinaRepository repository)
         {
             _repository = repository;
