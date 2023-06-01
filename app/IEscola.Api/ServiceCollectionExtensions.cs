@@ -4,10 +4,6 @@ using IEscola.Domain.Interfaces;
 using IEscola.Infra.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IEscola.Api
 {
@@ -19,6 +15,8 @@ namespace IEscola.Api
             // Container de DI
             services.AddScoped<IDisciplinaService, DisciplinaService>();
             services.AddScoped<IDisciplinaRepository, DisciplinaRepository>();
+
+            services.AddScoped<INotificador, Notificador>();
 
             // Vida útil dos objetos na memória -> Quando a aplicação "subir"
 

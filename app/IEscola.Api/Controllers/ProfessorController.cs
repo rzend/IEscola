@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using IEscola.Application.Interfaces;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,6 +20,10 @@ namespace IEscola.Api.Controllers
             new Professor(Guid.Parse("1A4559C2-F0E1-4010-9AEA-6B03D07C22BB"), "Maria", "01234567800", new DateTime(1989, 3, 15))
         };
 
+        public ProfessorController(INotificador notificador) : base(notificador)
+        {
+
+        }
 
         // GET: api/<ProfessorController>
         [HttpGet]
