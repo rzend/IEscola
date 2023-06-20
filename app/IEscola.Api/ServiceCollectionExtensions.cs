@@ -13,9 +13,16 @@ namespace IEscola.Api
         {
 
             // Container de DI
-            services.AddScoped<IDisciplinaService, DisciplinaService>();
-            services.AddScoped<IDisciplinaRepository, DisciplinaRepository>();
 
+            // Services
+            services.AddScoped<IDisciplinaService, DisciplinaService>();
+
+
+            // Repositories
+            services.AddSingleton<IDisciplinaRepository, DisciplinaRepository>();
+
+            
+            // Outros objetos
             services.AddScoped<INotificador, Notificador>();
 
             // Vida útil dos objetos na memória -> Quando a aplicação "subir"

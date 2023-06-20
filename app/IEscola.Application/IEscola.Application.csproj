@@ -8,4 +8,8 @@
     <ProjectReference Include="..\IEscola.Domain\IEscola.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HttpObjects\Disciplina\Response\" />
+  </ItemGroup>
+
 </Project>

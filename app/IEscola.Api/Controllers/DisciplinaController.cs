@@ -1,12 +1,11 @@
 ﻿using IEscola.Api.DeafultResponse;
+using IEscola.Application.HttpObjects.Disciplina.Request;
 using IEscola.Application.Interfaces;
-using IEscola.Application.Services;
 using IEscola.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,13 +16,11 @@ namespace IEscola.Api.Controllers
     {
 
         private readonly IDisciplinaService _service;
-        private readonly INotificador _notificador;
 
         public DisciplinaController(IDisciplinaService service, 
             INotificador notificador) : base(notificador)
         {
             _service = service;
-            _notificador = notificador;
         }
 
         // GET: api/<DisciplinaController>
@@ -42,12 +39,6 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         public IActionResult Get(Guid id)
         {
-            if (Guid.Empty == id)
-            {
-                NotificarErro("id inválido");
-                return SimpleResponse();
-            }
-
             var disciplina = _service.Get(id);
 
             return SimpleResponse(disciplina);
@@ -57,7 +48,7 @@ namespace IEscola.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Disciplina), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public IActionResult Post([FromBody] Disciplina disciplina)
+        public IActionResult Post([FromBody] DisciplinaInsertRequest disciplina)
         {
 
             _service.Insert(disciplina);
