@@ -7,11 +7,11 @@ namespace IEscola.Application.Interfaces
 {
     public interface IDisciplinaService
     {
-        IEnumerable<Disciplina> Get();
-        Disciplina Get(Guid id);
+        IEnumerable<DisciplinaResponse> Get();
+        DisciplinaResponse Get(Guid id);
 
-        void Insert(DisciplinaInsertRequest disciplina);
-        void Update(Guid id, Disciplina disciplina);
+        DisciplinaResponse Insert(DisciplinaInsertRequest disciplina);
+        DisciplinaResponse Update(DisciplinaUpdateRequest disciplina);
         void Delete(Disciplina disciplina);
     }
 }

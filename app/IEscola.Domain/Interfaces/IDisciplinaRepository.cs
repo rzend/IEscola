@@ -10,7 +10,7 @@ namespace IEscola.Domain.Interfaces
         Disciplina Get(Guid id);
 
         void Insert(Disciplina disciplina);
-        void Update(Guid id, Disciplina disciplina);
+        void Update(Disciplina disciplina);
         void Delete(Disciplina disciplina);
     }
 }
