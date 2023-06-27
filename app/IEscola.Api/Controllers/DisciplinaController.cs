@@ -50,6 +50,7 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Post([FromBody] DisciplinaInsertRequest disciplina)
         {
+            if (!ModelState.IsValid) return SimpleResponse(ModelState);
 
             var response = _service.Insert(disciplina);
 
@@ -62,6 +63,8 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult Put([FromBody] DisciplinaUpdateRequest disciplina)
         {
+            if (!ModelState.IsValid) return SimpleResponse(ModelState);
+
             var response = _service.Update(disciplina);
 
             return SimpleResponse(response);
