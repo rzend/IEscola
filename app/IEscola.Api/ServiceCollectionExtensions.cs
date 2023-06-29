@@ -1,4 +1,5 @@
-﻿using IEscola.Application.Interfaces;
+﻿using IEscola.Api.Filters;
+using IEscola.Application.Interfaces;
 using IEscola.Application.Services;
 using IEscola.Domain.Interfaces;
 using IEscola.Infra.Repositories;
@@ -13,6 +14,13 @@ namespace IEscola.Api
         {
 
             // Container de DI
+            services.AddHttpContextAccessor();
+            var settings = configuration.GetSection("Settings").Get<Settings>();
+            services.Configure<Settings>(configuration.GetSection("Settings"));
+
+            services.AddSingleton<ISettings, Settings>();
+
+            services.AddScoped<ISettingsService, SettingsService>();
 
             // Services
             services.AddScoped<IDisciplinaService, DisciplinaService>();
@@ -24,6 +32,10 @@ namespace IEscola.Api
             
             // Outros objetos
             services.AddScoped<INotificador, Notificador>();
+
+
+            // ActionFilter
+            services.AddScoped<AuthorizationActionFilterAsyncAttribute>();
 
             // Vida útil dos objetos na memória -> Quando a aplicação "subir"
 
