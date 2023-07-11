@@ -1,3 +1,4 @@
+using IEscola.Api.ResponsePolicies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace IEscola.Api
                 .AddJsonOptions(options =>
                  {
                      options.JsonSerializerOptions.IgnoreNullValues = true;
+                     options.JsonSerializerOptions.PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance;
                  });
 
 

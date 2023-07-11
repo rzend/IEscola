@@ -12,6 +12,6 @@ namespace IEscola.Application.Interfaces
 
         DisciplinaResponse Insert(DisciplinaInsertRequest disciplina);
         DisciplinaResponse Update(DisciplinaUpdateRequest disciplina);
-        void Delete(Disciplina disciplina);
+        void Delete(Guid id);
     }
 }

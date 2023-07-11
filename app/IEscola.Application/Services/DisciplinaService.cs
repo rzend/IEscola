@@ -10,7 +10,7 @@ namespace IEscola.Application.Services
 {
     public class DisciplinaService : ServiceBase, IDisciplinaService
     {
-        IDisciplinaRepository _repository;
+        readonly IDisciplinaRepository _repository;
 
         public DisciplinaService(IDisciplinaRepository repository,
             INotificador notificador) : base(notificador)
@@ -59,10 +59,12 @@ namespace IEscola.Application.Services
 
             // Mapear para o objeto de domínio
             var id = Guid.NewGuid();
-            var disciplina = new Disciplina(id, disciplinaRequest.Nome, disciplinaRequest.Descricao);
-            disciplina.DataUltimaAlteracao = DateTime.UtcNow;
-            disciplina.UsuarioUltimaAlteracao = "antonio";
-            disciplina.UsuarioCadastro = "antonio";
+            var disciplina = new Disciplina(id, disciplinaRequest.Nome, disciplinaRequest.Descricao)
+            {
+                DataUltimaAlteracao = DateTime.UtcNow,
+                UsuarioUltimaAlteracao = "antonio",
+                UsuarioCadastro = "antonio"
+            };
 
             // Processar
             _repository.Insert(disciplina);
@@ -89,12 +91,14 @@ namespace IEscola.Application.Services
 
             // Validar se a disciplina do Id existe
             var disc = Get(disciplinaRequest.Id);
-            if (disc is null) return default;            
+            if (disc is null) return default;
 
-            var disciplina = new Disciplina(disciplinaRequest.Id, disciplinaRequest.Nome, disciplinaRequest.Descricao);
-            disciplina.DataUltimaAlteracao = DateTime.UtcNow;
-            disciplina.UsuarioUltimaAlteracao = "antonio";
-            disciplina.UsuarioCadastro = "antonio";
+            var disciplina = new Disciplina(disciplinaRequest.Id, disciplinaRequest.Nome, disciplinaRequest.Descricao)
+            {
+                DataUltimaAlteracao = DateTime.UtcNow,
+                UsuarioUltimaAlteracao = "antonio",
+                UsuarioCadastro = "antonio"
+            };
 
             if (disciplinaRequest.Ativo)
                 disciplina.Ativar();
@@ -106,8 +110,16 @@ namespace IEscola.Application.Services
             return Map(disciplina);
         }
 
-        public void Delete(Disciplina disciplina)
+        public void Delete(Guid id)
         {
+            var disciplina = _repository.Get(id);
+
+            if (disciplina is null)
+            {
+                NotificarErro("Disciplina não encontrada");
+                return;
+            }
+
             _repository.Delete(disciplina);
         }
 

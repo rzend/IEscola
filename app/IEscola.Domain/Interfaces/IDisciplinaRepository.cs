@@ -9,8 +9,8 @@ namespace IEscola.Domain.Interfaces
         IEnumerable<Disciplina> Get();
         Disciplina Get(Guid id);
 
-        void Insert(Disciplina disciplina);
-        void Update(Disciplina disciplina);
-        void Delete(Disciplina disciplina);
+        void Insert(Disciplina Professor);
+        void Update(Disciplina Professor);
+        void Delete(Disciplina Professor);
     }
 }

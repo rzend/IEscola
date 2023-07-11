@@ -15,7 +15,7 @@ namespace IEscola.Api
 
             // Container de DI
             services.AddHttpContextAccessor();
-            var settings = configuration.GetSection("Settings").Get<Settings>();
+            //var settings = configuration.GetSection("Settings").Get<Settings>();
             services.Configure<Settings>(configuration.GetSection("Settings"));
 
             services.AddSingleton<ISettings, Settings>();
@@ -24,12 +24,16 @@ namespace IEscola.Api
 
             // Services
             services.AddScoped<IDisciplinaService, DisciplinaService>();
+            services.AddScoped<IProfessorService, ProfessorService>();
+            services.AddScoped<IAlunoService, AlunoService>();
 
 
             // Repositories
             services.AddSingleton<IDisciplinaRepository, DisciplinaRepository>();
+            services.AddSingleton<IProfessorRepository, ProfessorRepository>();
+            services.AddSingleton<IAlunoRepository, AlunoRepository>();
 
-            
+
             // Outros objetos
             services.AddScoped<INotificador, Notificador>();
 

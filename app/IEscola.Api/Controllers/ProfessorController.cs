@@ -1,9 +1,13 @@
-﻿using IEscola.Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System;
-using System.Linq;
 using IEscola.Application.Interfaces;
+using IEscola.Application.HttpObjects.Disciplina.Request;
+using Microsoft.AspNetCore.Http;
+using IEscola.Application.HttpObjects.Professor.Response;
+using IEscola.Api.DeafultResponse;
+using IEscola.Application.HttpObjects.Professor.Request;
+using IEscola.Api.Filters;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,63 +15,61 @@ using IEscola.Application.Interfaces;
 namespace IEscola.Api.Controllers
 {
     [Route("api/[controller]")]
+    [AuthorizationActionFilterAsync]
     public class ProfessorController : MainController
     {
-        private List<Professor> professorList = new List<Professor> {
-            new Professor(Guid.Parse("36062FEB-2011-4142-BC38-48413606BC94"), "Antonio", "01234567890", new DateTime(1990, 2, 27)),
-            new Professor(Guid.Parse("EB093931-E526-4EAB-B444-D9ED7B583F43"), "José", "22222222222", new DateTime(1985, 2, 21)),
-            new Professor(Guid.Parse("3BF8376A-2E89-4B28-91B5-FA9999BBD1A3"), "João", "11111111111", new DateTime(1983, 12, 31)),
-            new Professor(Guid.Parse("1A4559C2-F0E1-4010-9AEA-6B03D07C22BB"), "Maria", "01234567800", new DateTime(1989, 3, 15))
-        };
+        private readonly IProfessorService _service;
 
-        public ProfessorController(INotificador notificador) : base(notificador)
+        public ProfessorController(INotificador notificador, IProfessorService professorService) : base(notificador)
         {
-
+            _service = professorService;
         }
 
-        // GET: api/<ProfessorController>
         [HttpGet]
+        [ProducesResponseType(typeof(SimpleResponseObject<IEnumerable<ProfessorResponse>>), StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            return Ok(professorList);
+            var list = _service.Get();
+            return SimpleResponse(list);
         }
 
-        // GET api/<ProfessorController>/5
         [HttpGet("{id}")]
-        // [ProducesResponseType(Type = typeof(IEnumerable<Professor>), StatusCode = 200)] // TODO: Verificar o motivo do erro
+        [ProducesResponseType(typeof(SimpleResponseObject<DisciplinaResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         public IActionResult Get(Guid id)
         {
-            if  ( Guid.Empty == id)
-                return BadRequest("id inválido");
+            var professor = _service.Get(id);
 
-            var professor = professorList.FirstOrDefault(p => p.Id == id);
-            if (professor != null)
-                professor.Tratamento = Constantes.TratamentoProfessor;
-
-            return Ok(professor);
+            return SimpleResponse(professor);
         }
 
-        // POST api/<ProfessorController>
         [HttpPost]
-        public IActionResult Post([FromBody] Professor professor)
+        public IActionResult Post([FromBody] ProfessorInsertRequest professor)
         {
 
+            if (!ModelState.IsValid) return SimpleResponse(ModelState);
 
-            return Ok();
+            var response = _service.Insert(professor);
+
+            return SimpleResponse(response);
         }
 
-        // PUT api/<ProfessorController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(Guid id, [FromBody] Professor professor)
+        [HttpPut]
+        public IActionResult Put([FromBody] ProfessorUpdateRequest professor)
         {
-            return Ok();
+            if (!ModelState.IsValid) return SimpleResponse(ModelState);
+
+            var response = _service.Update(professor);
+
+            return SimpleResponse(response);
         }
 
-        // DELETE api/<ProfessorController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            return Ok();
+            _service.Delete(id);
+
+            return SimpleResponse();
         }
     }
 }
