@@ -6,6 +6,7 @@ using IEscola.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IEscola.Application.Services
@@ -48,6 +49,28 @@ namespace IEscola.Application.Services
 
             // Retornar
             return Map(aluno);
+        }
+
+        public async Task<IEnumerable<AlunoResponse>> GetByProfessorIdAsync(Guid professorId)
+        {
+            if (Guid.Empty == professorId)
+            {
+                NotificarErro("id inválido");
+                return default;
+            }
+
+            // Validar existencia de professor
+            var prof = _professorRepository.Get(professorId);
+            if (prof is null)
+            {
+                NotificarErro("Professor não encontrado");
+                return default;
+            }
+
+            var alunos = await _repository.GetByProfessorIdAsync(professorId);
+
+            // Retornar
+            return alunos.Select(a => Map(a));
         }
 
         public AlunoResponse Insert(AlunoInsertRequest alunoRequest)

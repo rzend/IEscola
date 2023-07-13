@@ -33,7 +33,7 @@ namespace IEscola.Application.Services
                 return default;
             }
 
-            var disciplina = _repository.Get(id);
+            var disciplina = _repository.GetAsync(id).GetAwaiter().GetResult();
 
             if (disciplina is null)
             {
@@ -112,7 +112,7 @@ namespace IEscola.Application.Services
 
         public void Delete(Guid id)
         {
-            var disciplina = _repository.Get(id);
+            var disciplina = _repository.GetAsync(id).GetAwaiter().GetResult();
 
             if (disciplina is null)
             {

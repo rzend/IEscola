@@ -3,6 +3,7 @@ using IEscola.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IEscola.Infra.Repositories
 {
@@ -23,9 +24,10 @@ namespace IEscola.Infra.Repositories
             return _disciplinaList;
         }
 
-        public Disciplina Get(Guid id)
+        public async Task<Disciplina> GetAsync(Guid id)
         {
-            return _disciplinaList.FirstOrDefault(d => d.Id == id);
+            await Task.Delay(1_000);
+            return await Task.FromResult(_disciplinaList.FirstOrDefault(d => d.Id == id));
         }
 
         public void Insert(Disciplina disciplina)
@@ -35,7 +37,7 @@ namespace IEscola.Infra.Repositories
 
         public void Update(Disciplina disciplina)
         {
-            var disc = Get(disciplina.Id);
+            var disc = GetAsync(disciplina.Id).GetAwaiter().GetResult();
 
             _disciplinaList.Remove(disc);
 

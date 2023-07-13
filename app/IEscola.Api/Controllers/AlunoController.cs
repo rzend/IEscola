@@ -33,6 +33,7 @@ namespace IEscola.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(SimpleResponseObject<AlunoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Get(Guid id)
         {
             if (Guid.Empty == id)
@@ -46,6 +47,7 @@ namespace IEscola.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(SimpleResponseObject<AlunoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Post([FromBody] AlunoInsertRequest aluno)
         {
             if (!ModelState.IsValid) return SimpleResponse(ModelState);
@@ -58,6 +60,7 @@ namespace IEscola.Api.Controllers
         [HttpPut]
         [ProducesResponseType(typeof(SimpleResponseObject<AlunoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Put([FromBody] AlunoUpdateRequest aluno)
         {
             if (!ModelState.IsValid) return SimpleResponse(ModelState);
@@ -68,8 +71,9 @@ namespace IEscola.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Delete(Guid id)
         {
             _service.Delete(id);

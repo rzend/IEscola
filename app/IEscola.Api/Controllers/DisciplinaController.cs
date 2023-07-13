@@ -26,6 +26,7 @@ namespace IEscola.Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<DisciplinaResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Get()
         {
             var list = _service.Get();
@@ -36,6 +37,7 @@ namespace IEscola.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(SimpleResponseObject<DisciplinaResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Get(Guid id)
         {
             var disciplina = _service.Get(id);
@@ -46,6 +48,7 @@ namespace IEscola.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(SimpleResponseObject<DisciplinaResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Post([FromBody] DisciplinaInsertRequest disciplina)
         {
             if (!ModelState.IsValid) return SimpleResponse(ModelState);
@@ -58,6 +61,7 @@ namespace IEscola.Api.Controllers
         [HttpPut()]
         [ProducesResponseType(typeof(SimpleResponseObject<DisciplinaResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Put([FromBody] DisciplinaUpdateRequest disciplina)
         {
             if (!ModelState.IsValid) return SimpleResponse(ModelState);
@@ -70,6 +74,7 @@ namespace IEscola.Api.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public IActionResult Delete(Guid id)
         {
             _service.Delete(id);

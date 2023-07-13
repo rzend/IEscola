@@ -47,12 +47,19 @@ namespace IEscola.Infra.Repositories
 
         public async Task<IEnumerable<Aluno>> Get()
         {
-            return await Task.FromResult(_alunoList);
+            //return await Task.FromResult(_alunoList);
+            return await Task.Run(() => _alunoList);
         }
 
         public Aluno Get(Guid id)
         {
             return _alunoList.FirstOrDefault(d => d.Id == id);
+        }
+
+        public async Task<IEnumerable<Aluno>> GetByProfessorIdAsync(Guid professorId)
+        {
+            await Task.Delay(1_000);
+            return await Task.FromResult(_alunoList.Where(d => d.ProfessorId == professorId));
         }
 
         public void Insert(Aluno aluno)

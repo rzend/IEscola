@@ -23,5 +23,8 @@ namespace IEscola.Application.HttpObjects.Professor.Request
         [MinLength(3, ErrorMessage = "Tratamento deve ter mais que 3 caracteres")]
         [MaxLength(15, ErrorMessage = "Tratamento deve ter menos que 15 caracteres")]
         public string Tratamento { get; set; }
+
+        [Required(ErrorMessage = "DisciplinaIdId não preenchido.")]
+        public Guid DisciplinaId { get; set; }
     }
 }

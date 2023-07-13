@@ -34,7 +34,7 @@ namespace IEscola.Api.Filters
                 return;
             }
 
-            if (!await TokenIsValid(token))
+            if (!await TokenIsValidAsync(token))
             {
                 MakeErroTokenInvalido(context);
                 return;
@@ -61,7 +61,7 @@ namespace IEscola.Api.Filters
             };
         }
 
-        public async Task<bool> TokenIsValid(string token)
+        public async Task<bool> TokenIsValidAsync(string token)
         {
             var flurResponse = await "http://localhost:3683/api/Auth/authenticated"
                 .AllowAnyHttpStatus()

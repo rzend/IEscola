@@ -1,16 +1,17 @@
 ﻿using IEscola.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace IEscola.Domain.Interfaces
 {
     public interface IDisciplinaRepository
     {
         IEnumerable<Disciplina> Get();
-        Disciplina Get(Guid id);
+        Task<Disciplina> GetAsync(Guid id);
 
-        void Insert(Disciplina Professor);
-        void Update(Disciplina Professor);
-        void Delete(Disciplina Professor);
+        void Insert(Disciplina disciplina);
+        void Update(Disciplina disciplina);
+        void Delete(Disciplina disciplina);
     }
 }
