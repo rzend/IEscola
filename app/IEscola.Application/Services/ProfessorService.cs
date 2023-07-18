@@ -28,14 +28,14 @@ namespace IEscola.Application.Services
             _alunoRepository = alunoRepository;
         }
 
-        public IEnumerable<ProfessorResponse> Get()
+        public async Task<IEnumerable<ProfessorResponse>> GetAsync()
         {
-            var list = _repository.Get();
+            var list = await _repository.GetAsync();
 
             return list.Select(d => Map(d));
         }
 
-        public ProfessorResponse Get(Guid id)
+        public async Task<ProfessorResponse> GetAsync(Guid id)
         {
             if (Guid.Empty == id)
             {
@@ -43,7 +43,7 @@ namespace IEscola.Application.Services
                 return default;
             }
 
-            var professor = _repository.Get(id);
+            var professor = await _repository.GetAsync(id);
 
             if (professor is null)
             {
@@ -63,7 +63,7 @@ namespace IEscola.Application.Services
                 return default;
             }
 
-            var professor = _repository.Get(id);
+            var professor = await _repository.GetAsync(id);
 
             if (professor is null)
             {
@@ -82,7 +82,7 @@ namespace IEscola.Application.Services
             return MapFull(professor);
         }
 
-        public ProfessorResponse Insert(ProfessorInsertRequest professorRequest)
+        public async Task<ProfessorResponse> InsertAsync(ProfessorInsertRequest professorRequest)
         {
             /// Validar a professor
             if (string.IsNullOrWhiteSpace(professorRequest.Nome))
@@ -90,6 +90,9 @@ namespace IEscola.Application.Services
 
             if (string.IsNullOrWhiteSpace(professorRequest.Cpf)) // TODO: Validar o CPF
                 NotificarErro("Cpf não preenchido");
+
+            if (professorRequest.DataNascimento >= DateTime.Today.AddYears(-18)) // Professor deve ser maior que 18 ano
+                NotificarErro("Data de nascimento inválida");
 
             if (TemNotificacao())
                 return default;
@@ -105,13 +108,13 @@ namespace IEscola.Application.Services
             };
 
             // Processar
-            _repository.Insert(professor);
+            await _repository.InsertAsync(professor);
 
             // Retornar
             return Map(professor);
         }
 
-        public ProfessorResponse Update(ProfessorUpdateRequest professorRequest)
+        public async Task<ProfessorResponse> UpdateAsync(ProfessorUpdateRequest professorRequest)
         {
 
             if (professorRequest.Id == Guid.Empty)
@@ -124,11 +127,14 @@ namespace IEscola.Application.Services
             if (string.IsNullOrWhiteSpace(professorRequest.Cpf)) // TODO: Validar o CPF
                 NotificarErro("Cpf não preenchido");
 
+            if (professorRequest.DataNascimento >= DateTime.Today.AddYears(-18)) // Professor deve ser maior que 18 ano
+                NotificarErro("Data de nascimento inválida");
+
             if (TemNotificacao())
                 return default;
 
             // Validar se a disciplina do Id existe
-            var disc = Get(professorRequest.Id);
+            var disc = await GetAsync(professorRequest.Id);
             if (disc is null) return default;
 
             // Mapear para o objeto de domínio
@@ -146,15 +152,15 @@ namespace IEscola.Application.Services
                 professor.Inativar();
 
             // Processar
-            _repository.Update(professor);
+            await _repository.UpdateAsync(professor);
 
             // Retornar
             return Map(professor);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var professor = _repository.Get(id);
+            var professor = await _repository.GetAsync(id);
 
             if (professor is null)
             {
@@ -162,7 +168,7 @@ namespace IEscola.Application.Services
                 return;
             }
 
-            _repository.Delete(professor);
+            await _repository.DeleteAsync(professor);
         }
 
         #region Private Methods
@@ -196,7 +202,8 @@ namespace IEscola.Application.Services
                     Descricao = professor.Disciplina.Descricao,
                     Ativo = professor.Disciplina.Ativo
                 },
-                Alunos = professor.Alunos.Select(a => new AlunoResponse { 
+                Alunos = professor.Alunos.Select(a => new AlunoResponse
+                {
                     Id = a.Id,
                     Nome = a.Nome,
                     NumeroMatricula = a.NumeroMatricula,

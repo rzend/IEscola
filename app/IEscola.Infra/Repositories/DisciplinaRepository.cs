@@ -19,9 +19,9 @@ namespace IEscola.Infra.Repositories
             new Disciplina ( Guid.Parse("9AA2068E-4704-4E7A-A67F-44F426E195C1"), "Filosofia","Para viajar nas ideias")
         };
 
-        public IEnumerable<Disciplina> Get()
+        public async Task<IEnumerable<Disciplina>> GetAsync()
         {
-            return _disciplinaList;
+            return await Task.FromResult(_disciplinaList);
         }
 
         public async Task<Disciplina> GetAsync(Guid id)
@@ -30,23 +30,23 @@ namespace IEscola.Infra.Repositories
             return await Task.FromResult(_disciplinaList.FirstOrDefault(d => d.Id == id));
         }
 
-        public void Insert(Disciplina disciplina)
+        public async Task InsertAsync(Disciplina disciplina)
         {
-            _disciplinaList.Add(disciplina);
+            await Task.Run(() => _disciplinaList.Add(disciplina));
         }
 
-        public void Update(Disciplina disciplina)
+        public async Task UpdateAsync(Disciplina disciplina)
         {
-            var disc = GetAsync(disciplina.Id).GetAwaiter().GetResult();
+            var disc = await GetAsync(disciplina.Id);
 
-            _disciplinaList.Remove(disc);
+            await DeleteAsync(disc);
 
-            _disciplinaList.Add(disciplina);
+            await InsertAsync(disciplina);
         }
 
-        public void Delete(Disciplina disciplina)
+        public async Task DeleteAsync(Disciplina disciplina)
         {
-            _disciplinaList.Remove(disciplina);
+            await Task.Run(() => _disciplinaList.Remove(disciplina));
         }
     }
 }

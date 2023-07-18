@@ -7,11 +7,11 @@ namespace IEscola.Domain.Interfaces
 {
     public interface IAlunoRepository
     {
-        Task<IEnumerable<Aluno>> Get();
+        Task<IEnumerable<Aluno>> GetAsync();
         Task<IEnumerable<Aluno>> GetByProfessorIdAsync(Guid professorId);
-        Aluno Get(Guid id);
-        void Insert(Aluno aluno);
-        void Update(Aluno aluno);
-        void Delete(Aluno aluno);
+        Task<Aluno> GetAsync(Guid id);
+        Task InsertAsync(Aluno aluno);
+        Task UpdateAsync(Aluno aluno);
+        Task DeleteAsync(Aluno aluno);
     }
 }

@@ -63,12 +63,20 @@ namespace IEscola.Api.Filters
 
         public async Task<bool> TokenIsValidAsync(string token)
         {
-            var flurResponse = await "http://localhost:3683/api/Auth/authenticated"
-                .AllowAnyHttpStatus()
-                .WithOAuthBearerToken(token.ToCleanToken())
-                .GetAsync();
+            try
+            {
+                var flurResponse = await "http://localhost:3683/api/Auth/authenticated"
+                        .AllowAnyHttpStatus()
+                        .WithOAuthBearerToken(token.ToCleanToken())
+                        .GetAsync();
 
-            return flurResponse.StatusCode >= 200 && flurResponse.StatusCode < 300;
+                return flurResponse.StatusCode >= 200 && flurResponse.StatusCode < 300;
+            }
+            catch (FlurlHttpException ex)
+            {
+                Console.WriteLine($"Exception com statusCode: {ex.StatusCode}");
+                return false;
+            }
         }
         // Flurl -> Fluent url
     }

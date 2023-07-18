@@ -5,6 +5,7 @@ using IEscola.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IEscola.Application.Services
 {
@@ -18,14 +19,14 @@ namespace IEscola.Application.Services
             _repository = repository;
         }
 
-        public IEnumerable<DisciplinaResponse> Get()
+        public async Task<IEnumerable<DisciplinaResponse>> GetAsync()
         {
-            var list = _repository.Get();
+            var list = await _repository.GetAsync();
 
             return list.Select(d => Map(d));
         }
 
-        public DisciplinaResponse Get(Guid id)
+        public async Task<DisciplinaResponse> GetAsync(Guid id)
         {
             if (Guid.Empty == id)
             {
@@ -33,7 +34,7 @@ namespace IEscola.Application.Services
                 return default;
             }
 
-            var disciplina = _repository.GetAsync(id).GetAwaiter().GetResult();
+            var disciplina = await _repository.GetAsync(id);
 
             if (disciplina is null)
             {
@@ -45,7 +46,7 @@ namespace IEscola.Application.Services
             return Map(disciplina);
         }
 
-        public DisciplinaResponse Insert(DisciplinaInsertRequest disciplinaRequest)
+        public async Task<DisciplinaResponse> InsertAsync(DisciplinaInsertRequest disciplinaRequest)
         {
             // Validar a disciplina
             if (string.IsNullOrWhiteSpace(disciplinaRequest.Nome))
@@ -67,13 +68,13 @@ namespace IEscola.Application.Services
             };
 
             // Processar
-            _repository.Insert(disciplina);
+            await _repository.InsertAsync(disciplina);
 
             // Retornar
             return Map(disciplina);
         }
 
-        public DisciplinaResponse Update(DisciplinaUpdateRequest disciplinaRequest)
+        public async Task<DisciplinaResponse> UpdateAsync(DisciplinaUpdateRequest disciplinaRequest)
         {
             // Validar a disciplina
 
@@ -90,7 +91,7 @@ namespace IEscola.Application.Services
                 return default;
 
             // Validar se a disciplina do Id existe
-            var disc = Get(disciplinaRequest.Id);
+            var disc = await GetAsync(disciplinaRequest.Id);
             if (disc is null) return default;
 
             var disciplina = new Disciplina(disciplinaRequest.Id, disciplinaRequest.Nome, disciplinaRequest.Descricao)
@@ -105,14 +106,14 @@ namespace IEscola.Application.Services
             else
                 disciplina.Inativar();
 
-            _repository.Update(disciplina);
+            await _repository.UpdateAsync(disciplina);
 
             return Map(disciplina);
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var disciplina = _repository.GetAsync(id).GetAwaiter().GetResult();
+            var disciplina =  await _repository.GetAsync(id);
 
             if (disciplina is null)
             {
@@ -120,7 +121,7 @@ namespace IEscola.Application.Services
                 return;
             }
 
-            _repository.Delete(disciplina);
+            await _repository.DeleteAsync(disciplina);
         }
 
         #region Private Methods

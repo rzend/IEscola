@@ -18,7 +18,7 @@ namespace IEscola.Application.HttpObjects.Aluno.Request
         public int NumeroMatricula { get; set; }
 
         [Required(ErrorMessage = "DataNascimento não preenchido.")]
-        [DataType(DataType.DateTime, ErrorMessage = "Data em formato inválido")]
+        [DataType(DataType.DateTime, ErrorMessage = "DataNascimento em formato inválido")]
         public DateTime DataNascimento { get; set; }
 
         [Required(ErrorMessage = "ProfessorId não preenchido.")]

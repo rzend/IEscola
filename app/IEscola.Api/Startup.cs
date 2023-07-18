@@ -1,3 +1,5 @@
+using Flurl.Http;
+using IEscola.Api.PollyPolices;
 using IEscola.Api.ResponsePolicies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,8 @@ namespace IEscola.Api
             });
 
             ConfigureSwagger(services);
+
+            FlurlHttp.Configure(settings => settings.HttpClientFactory = new PollyHttpClientFactory());
 
             services.Configure<ApiBehaviorOptions>(option =>
             {

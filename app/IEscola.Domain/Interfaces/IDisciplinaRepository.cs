@@ -7,11 +7,11 @@ namespace IEscola.Domain.Interfaces
 {
     public interface IDisciplinaRepository
     {
-        IEnumerable<Disciplina> Get();
+        Task<IEnumerable<Disciplina>> GetAsync();
         Task<Disciplina> GetAsync(Guid id);
 
-        void Insert(Disciplina disciplina);
-        void Update(Disciplina disciplina);
-        void Delete(Disciplina disciplina);
+        Task InsertAsync(Disciplina disciplina);
+        Task UpdateAsync(Disciplina disciplina);
+        Task DeleteAsync(Disciplina disciplina);
     }
 }

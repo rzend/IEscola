@@ -8,11 +8,11 @@ namespace IEscola.Application.Interfaces
 {
     public interface IAlunoService
     {
-        Task<IEnumerable<AlunoResponse>> Get();
-        AlunoResponse Get(Guid id);
+        Task<IEnumerable<AlunoResponse>> GetAsync();
+        Task<AlunoResponse> GetAsync(Guid id);
 
-        AlunoResponse Insert(AlunoInsertRequest professor);
-        AlunoResponse Update(AlunoUpdateRequest professor);
-        void Delete(Guid id);
+        Task<AlunoResponse> InsertAsync(AlunoInsertRequest professor);
+        Task<AlunoResponse> UpdateAsync(AlunoUpdateRequest professor);
+        Task DeleteAsync(Guid id);
     }
 }

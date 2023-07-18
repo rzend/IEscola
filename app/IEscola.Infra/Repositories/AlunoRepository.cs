@@ -45,40 +45,39 @@ namespace IEscola.Infra.Repositories
             new Aluno(Guid.Parse("1CF06F7A-4354-494D-AD40-B17FBA33EA6C"), "Lorena", new DateTime(1997, 5, 15), 2023_04, Guid.Parse("1A4559C2-F0E1-4010-9AEA-6B03D07C22BB")),
         };
 
-        public async Task<IEnumerable<Aluno>> Get()
+        public async Task<IEnumerable<Aluno>> GetAsync()
         {
-            //return await Task.FromResult(_alunoList);
-            return await Task.Run(() => _alunoList);
+            return await Task.FromResult(_alunoList);
         }
 
-        public Aluno Get(Guid id)
+        public async Task<Aluno> GetAsync(Guid id)
         {
-            return _alunoList.FirstOrDefault(d => d.Id == id);
+            return await Task.FromResult(_alunoList.FirstOrDefault(d => d.Id == id));
         }
 
         public async Task<IEnumerable<Aluno>> GetByProfessorIdAsync(Guid professorId)
         {
-            await Task.Delay(1_000);
+            await Task.Delay(1_000); // Delay para simular lentidão na consulta
             return await Task.FromResult(_alunoList.Where(d => d.ProfessorId == professorId));
         }
 
-        public void Insert(Aluno aluno)
+        public async Task InsertAsync(Aluno aluno)
         {
-            _alunoList.Add(aluno);
+            await Task.Run(() => _alunoList.Add(aluno));
         }
 
-        public void Update(Aluno aluno)
+        public async Task UpdateAsync(Aluno aluno)
         {
-            var disc = Get(aluno.Id);
+            var disc = await GetAsync(aluno.Id);
 
-            _alunoList.Remove(disc);
+            await DeleteAsync(disc);
 
-            _alunoList.Add(aluno);
+            await InsertAsync(aluno);
         }
 
-        public void Delete(Aluno aluno)
+        public async Task DeleteAsync(Aluno aluno)
         {
-            _alunoList.Remove(aluno);
+            await Task.Run(() =>  _alunoList.Remove(aluno)); 
         }
     }
 }

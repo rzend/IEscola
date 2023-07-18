@@ -3,6 +3,7 @@ using IEscola.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IEscola.Infra.Repositories
 {
@@ -15,33 +16,33 @@ namespace IEscola.Infra.Repositories
             new Professor(Guid.Parse("1A4559C2-F0E1-4010-9AEA-6B03D07C22BB"), "Maria", "01234567800", new DateTime(1989, 3, 15), Guid.Parse("FF829D06-A51E-413A-A800-8DA041F60AA6"))
         };
 
-        public void Delete(Professor professor)
+        public async Task<IEnumerable<Professor>> GetAsync()
         {
-            _professorList.Remove(professor);
+            return await Task.FromResult(_professorList); 
         }
 
-        public IEnumerable<Professor> Get()
+        public async Task<Professor> GetAsync(Guid id)
         {
-            return _professorList;
+            return await Task.FromResult(_professorList.FirstOrDefault(d => d.Id == id));
         }
 
-        public Professor Get(Guid id)
+        public async Task InsertAsync(Professor professor)
         {
-            return _professorList.FirstOrDefault(d => d.Id == id);
+             await Task.Run(() => _professorList.Add(professor));
         }
 
-        public void Insert(Professor professor)
+        public async Task UpdateAsync(Professor professor)
         {
-            _professorList.Add(professor);
+            var prof = await GetAsync(professor.Id);
+
+            await DeleteAsync(prof);
+
+            await InsertAsync(professor);
         }
 
-        public void Update(Professor professor)
+        public async Task DeleteAsync(Professor professor)
         {
-            var prof = Get(professor.Id);
-
-            _professorList.Remove(prof);
-
-            _professorList.Add(professor);
+            await Task.Run(() => _professorList.Remove(professor));
         }
     }
 }

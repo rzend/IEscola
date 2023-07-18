@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System;
 using IEscola.Application.Interfaces;
-using IEscola.Application.HttpObjects.Disciplina.Request;
 using Microsoft.AspNetCore.Http;
 using IEscola.Application.HttpObjects.Professor.Response;
 using IEscola.Api.DeafultResponse;
@@ -10,8 +9,6 @@ using IEscola.Application.HttpObjects.Professor.Request;
 using IEscola.Api.Filters;
 using System.Threading.Tasks;
 
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace IEscola.Api.Controllers
 {
@@ -29,9 +26,9 @@ namespace IEscola.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(SimpleResponseObject<IEnumerable<ProfessorResponse>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var list = _service.Get();
+            var list = await _service.GetAsync();
             return SimpleResponse(list);
         }
 
@@ -39,9 +36,9 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(SimpleResponseObject<ProfessorResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
-        public IActionResult Get(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            var professor = _service.Get(id);
+            var professor = await _service.GetAsync(id);
 
             return SimpleResponse(professor);
         }
@@ -61,12 +58,11 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(SimpleResponseObject<ProfessorResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
-        public IActionResult Post([FromBody] ProfessorInsertRequest professor)
+        public async Task<IActionResult> Post([FromBody] ProfessorInsertRequest professor)
         {
-
             if (!ModelState.IsValid) return SimpleResponse(ModelState);
 
-            var response = _service.Insert(professor);
+            var response = await _service.InsertAsync(professor);
 
             return SimpleResponse(response);
         }
@@ -75,11 +71,11 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(SimpleResponseObject<ProfessorResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
-        public IActionResult Put([FromBody] ProfessorUpdateRequest professor)
+        public async Task<IActionResult> Put([FromBody] ProfessorUpdateRequest professor)
         {
             if (!ModelState.IsValid) return SimpleResponse(ModelState);
 
-            var response = _service.Update(professor);
+            var response = await _service.UpdateAsync(professor);
 
             return SimpleResponse(response);
         }
@@ -88,9 +84,9 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            _service.Delete(id);
+            await _service.DeleteAsync(id);
 
             return SimpleResponse();
         }
