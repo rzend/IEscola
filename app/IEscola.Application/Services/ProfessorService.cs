@@ -3,6 +3,7 @@ using IEscola.Application.HttpObjects.Disciplina.Request;
 using IEscola.Application.HttpObjects.Professor.Request;
 using IEscola.Application.HttpObjects.Professor.Response;
 using IEscola.Application.Interfaces;
+using IEscola.Application.Services.Validators;
 using IEscola.Domain.Entities;
 using IEscola.Domain.Interfaces;
 using System;
@@ -84,19 +85,6 @@ namespace IEscola.Application.Services
 
         public async Task<ProfessorResponse> InsertAsync(ProfessorInsertRequest professorRequest)
         {
-            /// Validar a professor
-            if (string.IsNullOrWhiteSpace(professorRequest.Nome))
-                NotificarErro("Nome não preenchido");
-
-            if (string.IsNullOrWhiteSpace(professorRequest.Cpf)) // TODO: Validar o CPF
-                NotificarErro("Cpf não preenchido");
-
-            if (professorRequest.DataNascimento >= DateTime.Today.AddYears(-18)) // Professor deve ser maior que 18 ano
-                NotificarErro("Data de nascimento inválida");
-
-            if (TemNotificacao())
-                return default;
-
             // Mapear para o objeto de domínio
             var id = Guid.NewGuid();
             var professor = new Professor(id, professorRequest.Nome, professorRequest.Cpf, professorRequest.DataNascimento, professorRequest.DisciplinaId)
@@ -107,6 +95,11 @@ namespace IEscola.Application.Services
                 UsuarioCadastro = "antonio"
             };
 
+            ValidaInsert(professor);
+
+            if (TemNotificacao())
+                return default;
+
             // Processar
             await _repository.InsertAsync(professor);
 
@@ -116,27 +109,6 @@ namespace IEscola.Application.Services
 
         public async Task<ProfessorResponse> UpdateAsync(ProfessorUpdateRequest professorRequest)
         {
-
-            if (professorRequest.Id == Guid.Empty)
-                NotificarErro("Id não preenchido");
-
-            /// Validar a professor
-            if (string.IsNullOrWhiteSpace(professorRequest.Nome))
-                NotificarErro("Nome não preenchido");
-
-            if (string.IsNullOrWhiteSpace(professorRequest.Cpf)) // TODO: Validar o CPF
-                NotificarErro("Cpf não preenchido");
-
-            if (professorRequest.DataNascimento >= DateTime.Today.AddYears(-18)) // Professor deve ser maior que 18 ano
-                NotificarErro("Data de nascimento inválida");
-
-            if (TemNotificacao())
-                return default;
-
-            // Validar se a disciplina do Id existe
-            var disc = await GetAsync(professorRequest.Id);
-            if (disc is null) return default;
-
             // Mapear para o objeto de domínio
             var professor = new Professor(professorRequest.Id, professorRequest.Nome, professorRequest.Cpf, professorRequest.DataNascimento, professorRequest.DisciplinaId)
             {
@@ -145,6 +117,15 @@ namespace IEscola.Application.Services
                 UsuarioUltimaAlteracao = "antonio",
                 UsuarioCadastro = "antonio"
             };
+
+            // Validar se a disciplina do Id existe
+            var disc = await GetAsync(professor.Id);
+            if (disc is null) return default;
+
+            ValidaUpdate(professor);
+
+            if (TemNotificacao())
+                return default;
 
             if (professorRequest.Ativo)
                 professor.Ativar();
@@ -157,6 +138,8 @@ namespace IEscola.Application.Services
             // Retornar
             return Map(professor);
         }
+
+
 
         public async Task DeleteAsync(Guid id)
         {
@@ -172,6 +155,29 @@ namespace IEscola.Application.Services
         }
 
         #region Private Methods
+
+        private void ValidaInsert(Professor professor)
+        {
+            /// Validar a professor
+            if (string.IsNullOrWhiteSpace(professor.Nome))
+                NotificarErro("Nome não preenchido");
+
+            if (!CpfValidator.ValidarCPF(professor.Cpf)) // TODO: Validar o CPF
+                NotificarErro("Cpf não preenchido");
+
+            if (professor.DataNascimento >= DateTime.Today.AddYears(-18)) // Professor deve ser maior que 18 ano
+                NotificarErro("Data de nascimento inválida");
+        }
+
+        private void ValidaUpdate(Professor professor)
+        {
+            if (professor.Id == Guid.Empty)
+                NotificarErro("Id não preenchido");
+
+            ValidaInsert(professor);
+        }
+
+
         private static ProfessorResponse Map(Professor professor)
         {
             return new ProfessorResponse

@@ -16,7 +16,7 @@ namespace IEscola.Application.Services
             _notificador.Handle(new Notificacao(mensagem));
         }
 
-        protected bool TemNotificacao()
+        public bool TemNotificacao()
         {
             return _notificador.TemNotificacao();
         }
