@@ -1,37 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using IEscola.Api.DeafultResponse;
+using IEscola.Application.HttpObjects.Aluno.Request;
+using IEscola.Application.HttpObjects.Aluno.Response;
+using IEscola.Application.HttpObjects.Endereco.Request;
+using IEscola.Application.HttpObjects.Endereco.Response;
 using IEscola.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using IEscola.Api.Filters;
-using IEscola.Application.HttpObjects.Aluno.Response;
-using IEscola.Application.HttpObjects.Aluno.Request;
 using System.Threading.Tasks;
-using IEscola.Api.DeafultResponse;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace IEscola.Api.Controllers
 {
     [Route("api/[controller]")]
-    //[AuthorizationActionFilterAsync]
-    public class AlunoController : MainController
+    [ApiController]
+    public class EnderecoController : MainController
     {
-        private readonly IAlunoService _service;
+        private readonly IEnderecoService _enderecoService;
 
-        public AlunoController(INotificador notificador, IAlunoService service) : base(notificador)
+        public EnderecoController(INotificador notificador, IEnderecoService enderecoService) : base(notificador)
         {
-            _service = service;
+            _enderecoService = enderecoService;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(SimpleResponseObject<IEnumerable<AlunoResponse>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SimpleResponseObject<IEnumerable<EnderecoResponse>>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
-            var list = await _service.GetAsync();
+            var list = await _enderecoService.GetAsync();
             return SimpleResponse(list);
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(SimpleResponseObject<AlunoResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SimpleResponseObject<EnderecoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAsync(Guid id)
@@ -39,33 +42,33 @@ namespace IEscola.Api.Controllers
             if (Guid.Empty == id)
                 return BadRequest("id inválido");
 
-            var aluno = await _service.GetAsync(id);
+            var endereco = await _enderecoService.GetAsync(id);
 
-            return SimpleResponse(aluno);
+            return SimpleResponse(endereco);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(SimpleResponseObject<AlunoResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SimpleResponseObject<EnderecoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> Post([FromBody] AlunoInsertRequest aluno)
+        public async Task<IActionResult> Post([FromBody] EnderecoInsertRequest endereco)
         {
             if (!ModelState.IsValid) return SimpleResponse(ModelState);
 
-            var response = await _service.InsertAsync(aluno);
+            var response = await _enderecoService.InsertAsync(endereco);
 
             return SimpleResponse(response);
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(SimpleResponseObject<AlunoResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SimpleResponseObject<EnderecoResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> Put([FromBody] AlunoUpdateRequest aluno)
+        public async Task<IActionResult> Put([FromBody] EnderecoUpdateRequest endereco)
         {
             if (!ModelState.IsValid) return SimpleResponse(ModelState);
 
-            var response = await _service.UpdateAsync(aluno);
+            var response = await _enderecoService.UpdateAsync(endereco);
 
             return SimpleResponse(response);
         }
@@ -76,7 +79,7 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _service.DeleteAsync(id);
+            await _enderecoService.DeleteAsync(id);
 
             return SimpleResponse();
         }

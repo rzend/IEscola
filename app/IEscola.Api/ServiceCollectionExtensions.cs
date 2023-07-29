@@ -26,12 +26,14 @@ namespace IEscola.Api
             services.AddScoped<IDisciplinaService, DisciplinaService>();
             services.AddScoped<IProfessorService, ProfessorService>();
             services.AddScoped<IAlunoService, AlunoService>();
+            services.AddScoped<IEnderecoService, EnderecoService>();
 
 
             // Repositories
             services.AddSingleton<IDisciplinaRepository, DisciplinaRepository>();
             services.AddSingleton<IProfessorRepository, ProfessorRepository>();
             services.AddSingleton<IAlunoRepository, AlunoRepository>();
+            services.AddSingleton<IEnderecoRepository, EnderecoRepository>();
 
 
             // Outros objetos

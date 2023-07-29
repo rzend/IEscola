@@ -32,5 +32,8 @@ namespace IEscola.Application.HttpObjects.Professor.Request
 
         [Required(ErrorMessage = "DisciplinaIdId não preenchido.")]
         public Guid DisciplinaId { get; set; }
+
+        [Required(ErrorMessage = "DisciplinaIdId não preenchido.")]
+        public Guid EnderecoId { get; set; }
     }
 }

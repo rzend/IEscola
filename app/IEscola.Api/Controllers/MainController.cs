@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace IEscola.Api.Controllers
 {
     [Produces("application/json")]
-    [ApiController]
+    //[ApiController]
     public class MainController : ControllerBase
     {
         private readonly INotificador _notificador;

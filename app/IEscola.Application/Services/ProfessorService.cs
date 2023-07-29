@@ -1,5 +1,6 @@
 ﻿using IEscola.Application.HttpObjects.Aluno.Response;
 using IEscola.Application.HttpObjects.Disciplina.Request;
+using IEscola.Application.HttpObjects.Endereco.Response;
 using IEscola.Application.HttpObjects.Professor.Request;
 using IEscola.Application.HttpObjects.Professor.Response;
 using IEscola.Application.Interfaces;
@@ -18,15 +19,18 @@ namespace IEscola.Application.Services
         private readonly IProfessorRepository _repository;
         private readonly IDisciplinaRepository _disciplinaRepository;
         private readonly IAlunoRepository _alunoRepository;
+        private readonly IEnderecoRepository _enderecoRepository;
 
         public ProfessorService(IProfessorRepository repository,
             INotificador notificador,
             IDisciplinaRepository disciplinaRepository,
-            IAlunoRepository alunoRepository) : base(notificador)
+            IAlunoRepository alunoRepository,
+            IEnderecoRepository enderecoRepository) : base(notificador)
         {
             _repository = repository;
             _disciplinaRepository = disciplinaRepository;
             _alunoRepository = alunoRepository;
+            _enderecoRepository = enderecoRepository;
         }
 
         public async Task<IEnumerable<ProfessorResponse>> GetAsync()
@@ -75,6 +79,7 @@ namespace IEscola.Application.Services
             var tasks = new Task[]
             {
                 Task.Run(async () => professor.Disciplina = await _disciplinaRepository.GetAsync(professor.DisciplinaId)),
+                Task.Run(async () => professor.Endereco = await _enderecoRepository.GetAsync(professor.EnderecoId)),
                 Task.Run(async () => professor.Alunos = await _alunoRepository.GetByProfessorIdAsync(id))
             };
             Task.WaitAll(tasks);
@@ -87,7 +92,7 @@ namespace IEscola.Application.Services
         {
             // Mapear para o objeto de domínio
             var id = Guid.NewGuid();
-            var professor = new Professor(id, professorRequest.Nome, professorRequest.Cpf, professorRequest.DataNascimento, professorRequest.DisciplinaId)
+            var professor = new Professor(id, professorRequest.Nome, professorRequest.Cpf, professorRequest.DataNascimento, professorRequest.DisciplinaId, professorRequest.EnderecoId)
             {
                 Tratamento = professorRequest.Tratamento,
                 DataUltimaAlteracao = DateTime.UtcNow,
@@ -110,7 +115,7 @@ namespace IEscola.Application.Services
         public async Task<ProfessorResponse> UpdateAsync(ProfessorUpdateRequest professorRequest)
         {
             // Mapear para o objeto de domínio
-            var professor = new Professor(professorRequest.Id, professorRequest.Nome, professorRequest.Cpf, professorRequest.DataNascimento, professorRequest.DisciplinaId)
+            var professor = new Professor(professorRequest.Id, professorRequest.Nome, professorRequest.Cpf, professorRequest.DataNascimento, professorRequest.DisciplinaId, professorRequest.EnderecoId)
             {
                 Tratamento = professorRequest.Tratamento,
                 DataUltimaAlteracao = DateTime.UtcNow,
@@ -207,6 +212,16 @@ namespace IEscola.Application.Services
                     Nome = professor.Disciplina.Nome,
                     Descricao = professor.Disciplina.Descricao,
                     Ativo = professor.Disciplina.Ativo
+                },
+                Endereco = new EnderecoResponse
+                {
+                      Id = professor.EnderecoId,
+                      Logradouro = professor.Endereco.Logradouro,
+                      Bairro = professor.Endereco.Bairro,
+                      Numero = professor.Endereco.Numero,
+                      Cep = professor.Endereco.Cep,
+                      Cidade = professor.Endereco.Cidade,
+                      UF = professor.Endereco.UF     
                 },
                 Alunos = professor.Alunos.Select(a => new AlunoResponse
                 {

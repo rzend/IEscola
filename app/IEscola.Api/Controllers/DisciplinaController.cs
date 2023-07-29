@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace IEscola.Api.Controllers
 {
     [Route("api/[controller]")]
-    [AuthorizationActionFilterAsync]
+    //[AuthorizationActionFilterAsync]
     public class DisciplinaController : MainController
     {
 
