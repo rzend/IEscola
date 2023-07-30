@@ -1,5 +1,6 @@
 ﻿using IEscola.Application.HttpObjects.Endereco.Request;
 using IEscola.Application.HttpObjects.Endereco.Response;
+using IEscola.Application.HttpObjects.ViaCep;
 using IEscola.Application.Interfaces;
 using IEscola.Domain.Entities;
 using IEscola.Domain.Interfaces;
@@ -13,10 +14,12 @@ namespace IEscola.Application.Services
     public class EnderecoService : ServiceBase, IEnderecoService
     {
         private readonly IEnderecoRepository _repository;
+        private readonly IViaCepService _viaCepService;
 
-        public EnderecoService(INotificador notificador, IEnderecoRepository repository) : base(notificador)
+        public EnderecoService(INotificador notificador, IEnderecoRepository repository, IViaCepService viaCepService) : base(notificador)
         {
             _repository = repository;
+            _viaCepService = viaCepService;
         }
 
         public async Task<IEnumerable<EnderecoResponse>> GetAsync()
@@ -49,6 +52,8 @@ namespace IEscola.Application.Services
         {
             ValidaEndereco(enderecoRequest);
 
+            await ValidarCep(enderecoRequest);
+
             var id = Guid.NewGuid();
             var endereco = new Endereco(id, enderecoRequest.Logradouro, enderecoRequest.Bairro, enderecoRequest.Numero, enderecoRequest.Cep, enderecoRequest.Cidade, enderecoRequest.UF);
 
@@ -65,6 +70,8 @@ namespace IEscola.Application.Services
 
             ValidaEnderecoUpdate(enderecoRequest);
 
+            await ValidarCep(enderecoRequest);          
+           
             var endereco = new Endereco(enderecoRequest.Id, enderecoRequest.Logradouro, enderecoRequest.Bairro, enderecoRequest.Numero, enderecoRequest.Cep, enderecoRequest.Cidade, enderecoRequest.UF);
 
             await _repository.UpdateAsync(endereco);
@@ -141,6 +148,21 @@ namespace IEscola.Application.Services
 
             if (string.IsNullOrWhiteSpace(enderecoRequest.UF))
                 NotificarErro("UF não preenchida");
+        }
+        private async Task ValidarCep(EnderecoInsertRequest enderecoRequest)
+        {
+            var validaCep = await _viaCepService.RealizaConsultaCep(enderecoRequest.Cep);
+
+            if (!validaCep.cep.Equals(enderecoRequest.Cep))
+                NotificarErro("Cep não encontrado");
+        }
+
+        private async Task ValidarCep(EnderecoUpdateRequest enderecoRequest)
+        {
+            var validaCep = await _viaCepService.RealizaConsultaCep(enderecoRequest.Cep);
+
+            if (!validaCep.cep.Equals(enderecoRequest.Cep))
+                NotificarErro("Cep não encontrado");
         }
 
         #endregion

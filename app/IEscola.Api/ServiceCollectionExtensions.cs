@@ -1,6 +1,8 @@
 ﻿using IEscola.Api.Filters;
 using IEscola.Application.Interfaces;
+using IEscola.Application.Interfaces.DataService;
 using IEscola.Application.Services;
+using IEscola.Application.Services.DataService;
 using IEscola.Domain.Interfaces;
 using IEscola.Infra.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +29,7 @@ namespace IEscola.Api
             services.AddScoped<IProfessorService, ProfessorService>();
             services.AddScoped<IAlunoService, AlunoService>();
             services.AddScoped<IEnderecoService, EnderecoService>();
+            services.AddScoped<IViaCepService, ViaCepService>();
 
 
             // Repositories
@@ -42,6 +45,9 @@ namespace IEscola.Api
 
             // ActionFilter
             services.AddScoped<AuthorizationActionFilterAsyncAttribute>();
+
+            // Data Services
+            services.AddScoped<IViaCepDataService, ViaCepServiceData>();
 
             // Vida útil dos objetos na memória -> Quando a aplicação "subir"
 

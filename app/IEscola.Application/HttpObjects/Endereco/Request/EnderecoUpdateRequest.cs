@@ -21,12 +21,12 @@ namespace IEscola.Application.HttpObjects.Endereco.Request
         [Required(ErrorMessage = "Número não preenchido.")]
         [MinLength(1, ErrorMessage = "Número deve ter 1 algarimos")]
         [MaxLength(10, ErrorMessage = "Número deve ter 10 algarimos")]
-        public int Numero { get; set; }
+        public string Numero { get; set; }
 
         [Required(ErrorMessage = "Cep não preenchido.")]
         [MinLength(8, ErrorMessage = "Cep deve ter 8 algarimos")]
         [MaxLength(8, ErrorMessage = "Cep deve ter 8 algarimos")]
-        public int Cep { get; set; }
+        public string Cep { get; set; }
 
         [Required(ErrorMessage = "Cidade não preenchido.")]
         [MinLength(3, ErrorMessage = "Cidade deve ter mais que 3 caracteres")]
