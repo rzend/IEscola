@@ -52,7 +52,7 @@ namespace IEscola.Application.Services
         {
             ValidaEndereco(enderecoRequest);
 
-            await ValidarCep(enderecoRequest);
+            await ValidarCep(enderecoRequest.Cep);
 
             var id = Guid.NewGuid();
             var endereco = new Endereco(id, enderecoRequest.Logradouro, enderecoRequest.Bairro, enderecoRequest.Numero, enderecoRequest.Cep, enderecoRequest.Cidade, enderecoRequest.UF);
@@ -70,7 +70,7 @@ namespace IEscola.Application.Services
 
             ValidaEnderecoUpdate(enderecoRequest);
 
-            await ValidarCep(enderecoRequest);          
+            await ValidarCep(enderecoRequest.Cep);          
            
             var endereco = new Endereco(enderecoRequest.Id, enderecoRequest.Logradouro, enderecoRequest.Bairro, enderecoRequest.Numero, enderecoRequest.Cep, enderecoRequest.Cidade, enderecoRequest.UF);
 
@@ -149,19 +149,12 @@ namespace IEscola.Application.Services
             if (string.IsNullOrWhiteSpace(enderecoRequest.UF))
                 NotificarErro("UF não preenchida");
         }
-        private async Task ValidarCep(EnderecoInsertRequest enderecoRequest)
+
+        private async Task ValidarCep(string cep)
         {
-            var validaCep = await _viaCepService.RealizaConsultaCep(enderecoRequest.Cep);
+            var validaCep = await _viaCepService.RealizaConsultaCep(cep);
 
-            if (!validaCep.cep.Equals(enderecoRequest.Cep))
-                NotificarErro("Cep não encontrado");
-        }
-
-        private async Task ValidarCep(EnderecoUpdateRequest enderecoRequest)
-        {
-            var validaCep = await _viaCepService.RealizaConsultaCep(enderecoRequest.Cep);
-
-            if (!validaCep.cep.Equals(enderecoRequest.Cep))
+            if (!validaCep.cep.Equals(cep))
                 NotificarErro("Cep não encontrado");
         }
 

@@ -39,9 +39,6 @@ namespace IEscola.Api.Controllers
         [ProducesResponseType(typeof(SimpleResponseObject), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAsync(Guid id)
         {
-            if (Guid.Empty == id)
-                return BadRequest("id inválido");
-
             var endereco = await _enderecoService.GetAsync(id);
 
             return SimpleResponse(endereco);

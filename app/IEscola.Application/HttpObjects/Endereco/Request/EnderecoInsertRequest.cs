@@ -30,7 +30,7 @@ namespace IEscola.Application.HttpObjects.Endereco.Request
         public string Cidade { get; set; }
 
         [Required(ErrorMessage = "UF não preenchido.")]
-        [MinLength(2, ErrorMessage = "UF deve ter mais que 2 caracteres")]
+        [MinLength(1, ErrorMessage = "UF deve ter mais que 1 caracteres")]
         [MaxLength(2, ErrorMessage = "UF deve ter menos que 2 caracteres")]
         public string UF { get; set; }
     }
